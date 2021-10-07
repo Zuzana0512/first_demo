@@ -1,22 +1,21 @@
 package nl.novi.first_demo.model;
 
-import jdk.jfr.Enabled;
-
 import javax.persistence.*;
 
 @Entity
-@Table(name = "customers")
+@Table(name = "suppliers")
 
-public class Customer {
-
-    // attributes
+public class Supplier {
+    //attributes
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    long id;
+    String name;
+    String address;
+    String product;
 
-    private String name;
-    private String address;
-    private String email;
+    //setters en getters
+
 
     public long getId() {
         return id;
@@ -25,7 +24,6 @@ public class Customer {
     public void setId(long id) {
         this.id = id;
     }
-// setter and getters
 
     public String getName() {
         return name;
@@ -43,11 +41,11 @@ public class Customer {
         this.address = address;
     }
 
-    public String getEmail() {
-        return email;
+    public String getProduct() {
+        return product;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setProduct(String product) {
+        this.product = product;
     }
 }

@@ -6,11 +6,11 @@ import javax.persistence.*;
 @Table(name = "products")
 
 public class Product {
+
+    // attributes
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
-    // attributes
     private String name;
     private String kind;
     private String packaging;

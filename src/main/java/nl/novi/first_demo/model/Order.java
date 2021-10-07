@@ -6,18 +6,34 @@ import javax.persistence.*;
 @Table(name = "orders")
 
 public class Order {
-
+    //Attributes
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
-    //Attributes
+    String customerName;
+    long customerId;
     String date;
-    Boolean paymentStatus;
-    Boolean deliveringStatus;
+    String paymentStatus;
+    String deliveringStatus;
 
     //setter en getters
 
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
+    public long getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(long customerId) {
+        this.customerId = customerId;
+    }
 
     public long getId() {
         return id;
@@ -35,19 +51,25 @@ public class Order {
         this.date = date;
     }
 
-    public Boolean getPaymentStatus() {
-        return paymentStatus;
-    }
-
-    public void setPaymentStatus(Boolean paymentStatus) {
+    public void setPaymentStatus(String paymentStatus) {
         this.paymentStatus = paymentStatus;
     }
 
-    public Boolean getDeliveringStatus() {
+    public String getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public String getDeliveringStatus() {
         return deliveringStatus;
     }
 
-    public void setDeliveringStatus(Boolean deliveringStatus) {
+    public void setDeliveringStatus(String deliveringStatus) {
         this.deliveringStatus = deliveringStatus;
     }
+
+
+
+
+
+
 }

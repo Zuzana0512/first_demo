@@ -43,6 +43,8 @@ public class OrderService {
         Optional<Order> optionalOrder = orderRepository.findById(id);
         if (optionalOrder.isPresent()) {
             Order orderInDb = optionalOrder.get();
+            orderInDb.setCustomerName(order.getCustomerName());
+            orderInDb.setCustomerId(order.getCustomerId());
             orderInDb.setDate(order.getDate());
             orderInDb.setDeliveringStatus(order.getDeliveringStatus());
             orderInDb.setPaymentStatus(order.getPaymentStatus());
