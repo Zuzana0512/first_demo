@@ -12,7 +12,7 @@ import java.util.Optional;
 public class ProductService {
 
     @Autowired
-    private static ProductRepository productRepository;
+    private ProductRepository productRepository;
 
     public Iterable<Product> getProducts() {
         return productRepository.findAll();

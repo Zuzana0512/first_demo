@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public class PaymentService {
     @Autowired
-    private static PaymentRepository paymentRepository;
+    private PaymentRepository paymentRepository;
 
     public Iterable<Payment> getPayments() {
         return paymentRepository.findAll();

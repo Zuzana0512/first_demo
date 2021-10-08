@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public class OrderService {
     @Autowired
-    private static OrderRepository orderRepository;
+    private OrderRepository orderRepository;
 
     public Iterable<Order> getOrders() {
         return orderRepository.findAll();

@@ -17,7 +17,7 @@ public class CustomerService {
     private static List<Customer> customers = new ArrayList<>();
 
     @Autowired
-    private static CustomerRepository customerRepository;
+    private CustomerRepository customerRepository;
 
     public Iterable<Customer> getCustomers() {
         return customerRepository.findAll();

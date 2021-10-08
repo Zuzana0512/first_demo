@@ -13,7 +13,7 @@ import java.util.Optional;
 public class SupplierService {
 
     @Autowired
-    private static SupplierRepository supplierRepository;
+    private SupplierRepository supplierRepository;
 
     public Iterable<Supplier> getSuppliers() {
         return supplierRepository.findAll();
@@ -28,8 +28,9 @@ public class SupplierService {
         }
     }
 
-    public void addSupplier(Supplier supplier) {
-        supplierRepository.save(supplier);
+    public Long addSupplier(Supplier supplier) {
+        Supplier newSupplier = supplierRepository.save(supplier);
+        return newSupplier.getId();
     }
 
     public void deleteSupplier(long id) {

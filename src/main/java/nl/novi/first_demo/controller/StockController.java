@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 public class StockController {
     @Autowired
-    private static StockService stockService;
+    private StockService stockService;
 
     @GetMapping(value = "/stocks")
     @ResponseStatus(HttpStatus.OK)

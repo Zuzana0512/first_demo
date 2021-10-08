@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.*;
 
 public class SupplierController {
     @Autowired
-    private static SupplierService supplierService;
+    private SupplierService supplierService;
 
     @GetMapping(value = "/suppliers")
     @ResponseStatus(HttpStatus.OK)
-    public Iterable<Supplier> getSupplier() {
+    public Iterable<Supplier> getSuppliers() {
         return supplierService.getSuppliers();
     }
 
@@ -27,8 +27,8 @@ public class SupplierController {
     @PostMapping(value = "/suppliers")
     @ResponseStatus(HttpStatus.CREATED)
     public String addSupplier(@RequestBody Supplier supplier){
-        supplierService.addSupplier(supplier);
-        return "Added";
+        Long newId = supplierService.addSupplier(supplier);
+        return "Added " + newId;
     }
 
     @DeleteMapping(value = "/suppliers/{id}")
