@@ -24,20 +24,20 @@ public class SupplierController {
         return supplierService.getSupplier(id);
     }
 
-    @GetMapping(value = "/suppliers")
+    @PostMapping(value = "/suppliers")
     @ResponseStatus(HttpStatus.CREATED)
     public String addSupplier(@RequestBody Supplier supplier){
         supplierService.addSupplier(supplier);
         return "Added";
     }
 
-    @GetMapping(value = "/suppliers/{id}")
+    @DeleteMapping(value = "/suppliers/{id}")
     public String deleteSupplier(@PathVariable int id){
         supplierService.deleteSupplier(id);
         return "Deleted";
     }
 
-    @GetMapping(value = "/suppliers/{id}")
+    @PutMapping(value = "/suppliers/{id}")
     public String updateSupplier(@PathVariable int id, @RequestBody Supplier supplier){
         supplierService.updateSupplier(id, supplier);
         return "Updated";

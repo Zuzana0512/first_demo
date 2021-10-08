@@ -24,22 +24,20 @@ public class StockController {
         return stockService.getStock(id);
     }
 
-    @GetMapping(value = "/stocks")
+    @PostMapping(value = "/stocks")
     @ResponseStatus(HttpStatus.CREATED)
     public String addStock (@RequestBody Stock stock){
         stockService.addStock(stock);
         return "Added";
     }
 
-    @GetMapping(value = "/stocks/{id}")
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @DeleteMapping(value = "/stocks/{id}")
     public String deleteStock (@PathVariable int id) {
         stockService.deleteStock(id);
         return "Deleted";
     }
 
-    @GetMapping(value = "/stocks/{id}")
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @PutMapping(value = "/stocks/{id}")
     public String updateStock (@PathVariable int id, @RequestBody Stock stock){
         stockService.updateStock(id,stock);
         return "Updated";
