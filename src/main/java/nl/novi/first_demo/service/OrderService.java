@@ -2,6 +2,7 @@ package nl.novi.first_demo.service;
 
 import nl.novi.first_demo.exeption.RecordNotFoundException;
 import nl.novi.first_demo.model.Order;
+import nl.novi.first_demo.model.Supplier;
 import nl.novi.first_demo.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,8 +10,8 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-
 public class OrderService {
+
     @Autowired
     private OrderRepository orderRepository;
 
@@ -27,8 +28,9 @@ public class OrderService {
         }
     }
 
-    public void addOrder(Order order) {
-        orderRepository.save(order);
+    public Long addOrder(Order order) {
+        Order newOrder = orderRepository.save(order);
+        return newOrder.getId();
     }
 
     public void deleteOrder(long id) {

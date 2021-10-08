@@ -1,6 +1,7 @@
 package nl.novi.first_demo.service;
 
 import nl.novi.first_demo.exeption.RecordNotFoundException;
+import nl.novi.first_demo.model.Customer;
 import nl.novi.first_demo.model.Payment;
 import nl.novi.first_demo.repository.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +10,8 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-
 public class PaymentService {
+
     @Autowired
     private PaymentRepository paymentRepository;
 
@@ -28,8 +29,9 @@ public class PaymentService {
         }
     }
 
-    public void addPayment(Payment payment) {
-       paymentRepository.save(payment);
+    public Long addPayment(Payment payment) {
+        Payment newPayment = paymentRepository.save(payment);
+        return newPayment.getId();
     }
 
     public void deletePayment(long id) {

@@ -10,6 +10,7 @@ import java.util.Optional;
 
 @Service
 public class StockService {
+
     @Autowired
     private StockRepository stockRepository;
 
@@ -27,8 +28,9 @@ public class StockService {
 
     }
 
-    public void addStock(Stock stock) {
-        stockRepository.save(stock);
+    public Long addStock(Stock stock) {
+        Stock newStock = stockRepository.save(stock);
+        return newStock.getId();
     }
 
     public void deleteStock(long id) {

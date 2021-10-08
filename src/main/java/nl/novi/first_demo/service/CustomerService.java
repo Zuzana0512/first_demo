@@ -3,6 +3,7 @@ package nl.novi.first_demo.service;
 
 import nl.novi.first_demo.exeption.RecordNotFoundException;
 import nl.novi.first_demo.model.Customer;
+import nl.novi.first_demo.model.Supplier;
 import nl.novi.first_demo.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,9 +34,11 @@ public class CustomerService {
         }
     }
 
-    public void addCustomer(Customer customer) {
-        customerRepository.save(customer);
+    public Long addCustomer(Customer customer) {
+        Customer newCustomer = customerRepository.save(customer);
+        return newCustomer.getId();
     }
+
 
     public void deleteCustomer(long id) {
         if (customerRepository.existsById(id)) {

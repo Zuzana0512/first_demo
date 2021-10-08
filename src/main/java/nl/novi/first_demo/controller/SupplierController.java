@@ -4,11 +4,15 @@ import nl.novi.first_demo.model.Supplier;
 import nl.novi.first_demo.service.SupplierService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
-
 public class SupplierController {
+
     @Autowired
     private SupplierService supplierService;
 
@@ -20,25 +24,30 @@ public class SupplierController {
 
     @GetMapping(value = "/suppliers/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Supplier getSupplier(@PathVariable int id) {
+    public Supplier getSupplier(@PathVariable long id) {
         return supplierService.getSupplier(id);
     }
 
     @PostMapping(value = "/suppliers")
-    @ResponseStatus(HttpStatus.CREATED)
-    public String addSupplier(@RequestBody Supplier supplier){
+    public ResponseEntity addSupplier(@RequestBody Supplier supplier){
         Long newId = supplierService.addSupplier(supplier);
-        return "Added " + newId;
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(newId).toUri();
+
+        return ResponseEntity.created(location).body("Added " + newId);
     }
 
     @DeleteMapping(value = "/suppliers/{id}")
-    public String deleteSupplier(@PathVariable int id){
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public String deleteSupplier(@PathVariable long id){
         supplierService.deleteSupplier(id);
         return "Deleted";
     }
 
     @PutMapping(value = "/suppliers/{id}")
-    public String updateSupplier(@PathVariable int id, @RequestBody Supplier supplier){
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public String updateSupplier(@PathVariable long id, @RequestBody Supplier supplier){
         supplierService.updateSupplier(id, supplier);
         return "Updated";
     }

@@ -1,14 +1,19 @@
 package nl.novi.first_demo.controller;
 
 import nl.novi.first_demo.model.Payment;
+import nl.novi.first_demo.model.Supplier;
 import nl.novi.first_demo.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
-
 public class PaymentController {
+
     @Autowired
     private PaymentService paymentService;
 
@@ -20,26 +25,32 @@ public class PaymentController {
 
 
     @GetMapping(value = "/payments/{id}")
-    public Payment getPayment(@PathVariable int id) {
+    @ResponseStatus(HttpStatus.OK)
+    public Payment getPayment(@PathVariable long id) {
         return paymentService.getPayment(id);
     }
 
     @PostMapping(value = "/payments")
-    @ResponseStatus(HttpStatus.CREATED)
-    public String addPayment(@RequestBody Payment payment) {
-        paymentService.addPayment(payment);
-        return "Added";
+    public ResponseEntity addPayment(@RequestBody Payment payment){
+        Long newId = paymentService.addPayment(payment);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(newId).toUri();
+
+        return ResponseEntity.created(location).body("Added " + newId);
     }
 
 
     @DeleteMapping(value = "/payments/{id}")
-    public String deletePayment(@PathVariable int id) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public String deletePayment(@PathVariable long id) {
         paymentService.deletePayment(id);
         return "Removed";
     }
 
     @PutMapping(value = "/payments/{id}")
-    public String updatePayment(@PathVariable int id, @RequestBody Payment payment) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public String updatePayment(@PathVariable long id, @RequestBody Payment payment) {
         paymentService.updatePayment(id, payment);
         return "Updated customer";
     }

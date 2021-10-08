@@ -1,14 +1,19 @@
 package nl.novi.first_demo.controller;
 
 import nl.novi.first_demo.model.Stock;
+import nl.novi.first_demo.model.Supplier;
 import nl.novi.first_demo.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
-
 public class StockController {
+
     @Autowired
     private StockService stockService;
 
@@ -20,25 +25,30 @@ public class StockController {
 
     @GetMapping(value = "/stocks/{id}")
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public Stock getStock (@PathVariable int id) {
+    public Stock getStock (@PathVariable long id) {
         return stockService.getStock(id);
     }
 
     @PostMapping(value = "/stocks")
-    @ResponseStatus(HttpStatus.CREATED)
-    public String addStock (@RequestBody Stock stock){
-        stockService.addStock(stock);
-        return "Added";
+    public ResponseEntity addStock(@RequestBody Stock stock){
+        Long newId = stockService.addStock(stock);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(newId).toUri();
+
+        return ResponseEntity.created(location).body("Added " + newId);
     }
 
     @DeleteMapping(value = "/stocks/{id}")
-    public String deleteStock (@PathVariable int id) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public String deleteStock (@PathVariable long id) {
         stockService.deleteStock(id);
         return "Deleted";
     }
 
     @PutMapping(value = "/stocks/{id}")
-    public String updateStock (@PathVariable int id, @RequestBody Stock stock){
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public String updateStock (@PathVariable long id, @RequestBody Stock stock){
         stockService.updateStock(id,stock);
         return "Updated";
     }
