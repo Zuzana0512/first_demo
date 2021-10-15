@@ -1,5 +1,6 @@
 package nl.novi.first_demo.controller;
 
+import nl.novi.first_demo.dto.OrderRequestDto;
 import nl.novi.first_demo.model.Order;
 import nl.novi.first_demo.model.Supplier;
 import nl.novi.first_demo.service.OrderService;
@@ -31,8 +32,8 @@ public class OrderController {
     }
 
     @PostMapping(value = "/orders")
-    public ResponseEntity addOrder(@RequestBody Order order){
-        Long newId = orderService.addOrder(order);
+    public ResponseEntity addOrder(@RequestBody OrderRequestDto orderRequestDto){
+        Long newId = orderService.addOrder(orderRequestDto);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(newId).toUri();

@@ -1,6 +1,9 @@
 package nl.novi.first_demo.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "orders")
@@ -12,9 +15,13 @@ public class Order {
     private long id;
     String customerName;
     long customerId;
-    String date;
-    String paymentStatus;
-    String deliveringStatus;
+    Date date;
+    boolean paid = false;
+    boolean delivered = false;
+
+
+    @OneToMany(mappedBy = "order")
+    List<OrderRegel> orderRegels = new ArrayList<>();
 
     //setter en getters
 
@@ -43,33 +50,36 @@ public class Order {
         this.id = id;
     }
 
-    public String getDate() {
+
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
-    public void setPaymentStatus(String paymentStatus) {
-        this.paymentStatus = paymentStatus;
+    public boolean isPaid() {
+        return paid;
     }
 
-    public String getPaymentStatus() {
-        return paymentStatus;
+    public void setPaid(boolean paid) {
+        this.paid = paid;
     }
 
-    public String getDeliveringStatus() {
-        return deliveringStatus;
+    public boolean isDelivered() {
+        return delivered;
     }
 
-    public void setDeliveringStatus(String deliveringStatus) {
-        this.deliveringStatus = deliveringStatus;
+    public void setDelivered(boolean delivered) {
+        this.delivered = delivered;
     }
 
+    public List<OrderRegel> getOrderRegels() {
+        return orderRegels;
+    }
 
-
-
-
-
+    public void setOrderRegels(List<OrderRegel> orderRegels) {
+        this.orderRegels = orderRegels;
+    }
 }
