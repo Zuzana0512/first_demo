@@ -1,11 +1,14 @@
 package nl.novi.first_demo.service;
 
 
+import nl.novi.first_demo.dto.CustomerRequestDto;
 import nl.novi.first_demo.exeption.RecordNotFoundException;
 import nl.novi.first_demo.model.Customer;
-import nl.novi.first_demo.model.Supplier;
+import nl.novi.first_demo.model.User;
 import nl.novi.first_demo.repository.CustomerRepository;
+import nl.novi.first_demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -19,6 +22,15 @@ public class CustomerService {
 
     @Autowired
     private CustomerRepository customerRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private UserService userService;
 
     public Iterable<Customer> getCustomers() {
         return customerRepository.findAll();
@@ -34,8 +46,23 @@ public class CustomerService {
         }
     }
 
-    public Long addCustomer(Customer customer) {
-        Customer newCustomer = customerRepository.save(customer);
+    public Long addCustomer(CustomerRequestDto customerRequestDto) {
+        Customer newCustomer = new Customer();
+        newCustomer.setName(customerRequestDto.getName());
+        newCustomer.setAddress(customerRequestDto.getAddress());
+        newCustomer.setEmail(customerRequestDto.getEmail());
+        Customer savedCustomer = customerRepository.save(newCustomer);
+        User newUser = new User();
+        newUser.setUserName(savedCustomer.getEmail());
+        String password = customerRequestDto.getPassword();
+        String encryptedPassword = passwordEncoder.encode(password);
+        newUser.setPassword(encryptedPassword);
+        newUser.setEnabled(true);
+        newUser.setCustomer(savedCustomer);
+        User savedUser = userRepository.save(newUser);
+        savedCustomer.setUser(savedUser);
+        customerRepository.save(savedCustomer);
+        userService.addAuthority(newUser.getUserName(), "ROLE_CUSTOMER");
         return newCustomer.getId();
     }
 

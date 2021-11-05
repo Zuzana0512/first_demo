@@ -1,34 +1,19 @@
 package nl.novi.first_demo.dto;
 
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
 import java.util.List;
 
 public class OrderRequestDto {
 
-    public class OrderRegelDto {
-        private int quantity;
-        private long productId;
-
-        public int getQuantity() {
-            return quantity;
-        }
-
-        public void setQuantity(int quantity) {
-            this.quantity = quantity;
-        }
-
-        public long getProductId() {
-            return productId;
-        }
-
-        public void setProductId(long productId) {
-            this.productId = productId;
-        }
-    }
-
+    @NotBlank
     private Date date;
+
+    @NotBlank
     private long customerId;
-    private List<OrderRegelDto> orderRegelDtos;
+
+    @NotBlank
+    private List<OrderRowDto> orderRowDtos;
 
     public Date getDate() {
         return date;
@@ -46,12 +31,12 @@ public class OrderRequestDto {
         this.customerId = customerId;
     }
 
-    public List<OrderRegelDto> getOrderRegelDtos() {
-        return orderRegelDtos;
+    public List<OrderRowDto> getOrderRowDtos() {
+        return orderRowDtos;
     }
 
-    public void setOrderRegelDtos(List<OrderRegelDto> orderRegelDtos) {
-        this.orderRegelDtos = orderRegelDtos;
+    public void setOrderRowDtos(List<OrderRowDto> orderRowDtos) {
+        this.orderRowDtos = orderRowDtos;
     }
 }
 

@@ -1,7 +1,9 @@
 package nl.novi.first_demo.service;
 
 import nl.novi.first_demo.exeption.RecordNotFoundException;
+import nl.novi.first_demo.model.Authority;
 import nl.novi.first_demo.model.User;
+import nl.novi.first_demo.repository.AuthorityRepository;
 import nl.novi.first_demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,6 +19,9 @@ public class UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private AuthorityRepository authorityRepository;
 
     public Iterable<User> getUsers() {
         return userRepository.findAll();
@@ -61,6 +66,36 @@ public class UserService {
             throw new RecordNotFoundException("User with userName " + " is not found.");
         }
 
+    }
+
+    public void addAuthority(String userName, String authorityName) {
+        Optional<User> optionalUser = userRepository.findById(userName);
+        if (optionalUser.isPresent()) {
+            User userInDb = optionalUser.get();
+            Authority newAuthority = new Authority();
+            newAuthority.setUsername(userInDb.getUserName());
+            newAuthority.setAuthority(authorityName);
+            Authority savedAuthority = authorityRepository.save(newAuthority);
+            userInDb.addAuthority(savedAuthority);
+            userRepository.save(userInDb);
+        }
+        else {
+            throw new RecordNotFoundException("User with userName " + " is not found.");
+        }
+
+    }
+
+    public void setPassword(String userName, String newPassword) {
+        Optional<User> optionalUser = userRepository.findById(userName);
+        if (optionalUser.isPresent()) {
+            User userInDb = optionalUser.get();
+            String encryptedPassword = passwordEncoder.encode(newPassword);
+            userInDb.setPassword(encryptedPassword);
+            userRepository.save(userInDb);
+        }
+        else {
+            throw new RecordNotFoundException("User with userName " + " is not found.");
+        }
     }
 
 }

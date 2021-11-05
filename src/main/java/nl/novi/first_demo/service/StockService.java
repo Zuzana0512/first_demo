@@ -1,5 +1,6 @@
 package nl.novi.first_demo.service;
 
+import nl.novi.first_demo.exeption.NotEnoughStockException;
 import nl.novi.first_demo.exeption.RecordNotFoundException;
 import nl.novi.first_demo.model.Stock;
 import nl.novi.first_demo.repository.StockRepository;
@@ -50,6 +51,21 @@ public class StockService {
             stockInDb.setProductAmount(stockInDb.getProductAmount());
             stockInDb.setProductNameSupplier(stock.getProductNameSupplier());
             stockInDb.setSupplierName(stock.getSupplierName());
+            stockRepository.save(stockInDb);
+        }
+        else{
+            throw new RecordNotFoundException("Stock with id " + " not found.");
+        }
+    }
+
+    public void takeOfStock(String productName, int amount){
+        Optional<Stock> optionalStock = stockRepository.findByProductName(productName);
+        if(optionalStock.isPresent()){
+            Stock stockInDb = optionalStock.get();
+            if(stockInDb.getProductAmount() < amount){
+                throw new NotEnoughStockException("Not in stock.");
+            }
+            stockInDb.setProductAmount(stockInDb.getProductAmount() - amount);
             stockRepository.save(stockInDb);
         }
         else{

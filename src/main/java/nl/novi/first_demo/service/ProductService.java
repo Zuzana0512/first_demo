@@ -1,7 +1,6 @@
 package nl.novi.first_demo.service;
 
 import nl.novi.first_demo.exeption.RecordNotFoundException;
-import nl.novi.first_demo.model.Payment;
 import nl.novi.first_demo.model.Product;
 import nl.novi.first_demo.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +48,7 @@ public class ProductService {
             Product productInDb = optionalProduct.get();
             productInDb.setName(product.getName());
             productInDb.setKind(product.getKind());
+            productInDb.setPackaging(product.getPackaging());
             productInDb.setDescription(product.getDescription());
             productInDb.setPhoto(product.getPhoto());
             productInDb.setPrice(product.getPrice());

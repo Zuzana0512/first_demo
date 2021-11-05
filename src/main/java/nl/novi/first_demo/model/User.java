@@ -1,6 +1,9 @@
 package nl.novi.first_demo.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -9,8 +12,10 @@ public class User {
 
     @Id
     @Column(name = "username")
+    @NotBlank
     private String userName;
 
+    @NotBlank
     private String password;
 
     private boolean enabled = true;
@@ -22,7 +27,10 @@ public class User {
             orphanRemoval = true,
             fetch = FetchType.EAGER)
 
-    private List<Authority> authorities;
+    private List<Authority> authorities = new ArrayList<>();
+
+    @OneToOne
+    private Customer customer;
 
     // getters and setters
 
@@ -58,4 +66,15 @@ public class User {
         this.authorities = authorities;
     }
 
+    public void addAuthority(Authority authority){
+        this.authorities.add(authority);
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
 }
