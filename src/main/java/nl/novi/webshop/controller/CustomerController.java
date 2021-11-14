@@ -3,8 +3,8 @@ package nl.novi.webshop.controller;
 import nl.novi.webshop.dto.CustomerRequestDto;
 import nl.novi.webshop.model.Customer;
 import nl.novi.webshop.model.Order;
-import nl.novi.webshop.service.CustomerService;
-import nl.novi.webshop.service.OrderService;
+import nl.novi.webshop.service.CustomerServiceImpl;
+import nl.novi.webshop.service.OrderServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +18,10 @@ import java.net.URI;
 public class CustomerController {
 
     @Autowired
-    private CustomerService customerService;
+    private CustomerServiceImpl customerService;
 
     @Autowired
-    private OrderService orderService;
+    private OrderServiceImpl orderService;
 
     @GetMapping(value = "/customers")
     @ResponseStatus(HttpStatus.OK)

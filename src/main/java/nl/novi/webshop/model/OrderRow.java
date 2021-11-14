@@ -2,11 +2,17 @@ package nl.novi.webshop.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonGetter;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 import static nl.novi.webshop.util.Rounding.roundTo;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "order_rows")
 public class OrderRow {
@@ -22,38 +28,6 @@ public class OrderRow {
     @ManyToOne
     @JsonBackReference
     private Order order;
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public Order getOrder() {
-        return order;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
-    }
 
     @JsonGetter("SubTotalExclVat")
     public double calculateSubTotalExclVat() {

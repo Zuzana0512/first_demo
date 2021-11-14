@@ -14,8 +14,6 @@ public class CustomerRequestDto {
     @NotBlank
     private String lastname;
     @NotBlank
-    private String address;
-    @NotBlank
     @Email
     private String email;
     @NotBlank

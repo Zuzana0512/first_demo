@@ -3,99 +3,22 @@ package nl.novi.webshop.service;
 import nl.novi.webshop.exeption.RecordNotFoundException;
 import nl.novi.webshop.model.Authority;
 import nl.novi.webshop.model.User;
-import nl.novi.webshop.repository.AuthorityRepository;
-import nl.novi.webshop.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-@Service
-public class UserService {
+public interface UserService {
+    public abstract Iterable<User> getUsers();
 
-    @Autowired
-    private UserRepository userRepository;
+    public abstract User getUser(String userName);
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    public abstract String addUser (User user);
 
-    @Autowired
-    private AuthorityRepository authorityRepository;
+    public abstract void deleteUser (String userName);
 
-    public Iterable<User> getUsers() {
-        return userRepository.findAll();
-    }
+    public abstract void updateUser (String userName, User user);
 
-    public User getUser(String userName){
-        Optional<User> user = userRepository.findById(userName);
-        if(user.isPresent()){
-            return user.get();
-        }
-        else {
-            throw new RecordNotFoundException("User with userName " + userName + " is not found.");
-        }
-    }
+    public abstract void addAuthority(String userName, String authorityName);
 
-    public String addUser (User user){
-        String password = user.getPassword();
-        String encryptedPassword = passwordEncoder.encode(password);
-        user.setPassword(encryptedPassword);
-        User newUser = userRepository.save(user);
-        return newUser.getUserName();
-
-    }
-
-    public void deleteUser (String userName){
-        if (userRepository.existsById(userName)) {
-            userRepository.deleteById(userName);
-        }
-        else {
-            throw new RecordNotFoundException("User with userName " + userName + " is not found.");
-        }
-    }
-
-    public void updateUser (String userName, User user){
-        Optional<User> optionalUser = userRepository.findById(userName);
-        if (optionalUser.isPresent()) {
-            User userInDb = optionalUser.get();
-            userInDb.setUserName(user.getUserName());
-            userInDb.setPassword(user.getPassword());
-        }
-        else {
-            throw new RecordNotFoundException("User with userName " + " is not found.");
-        }
-
-    }
-
-    public void addAuthority(String userName, String authorityName) {
-        Optional<User> optionalUser = userRepository.findById(userName);
-        if (optionalUser.isPresent()) {
-            User userInDb = optionalUser.get();
-            Authority newAuthority = new Authority();
-            newAuthority.setUsername(userInDb.getUserName());
-            newAuthority.setAuthority(authorityName);
-            Authority savedAuthority = authorityRepository.save(newAuthority);
-            userInDb.addAuthority(savedAuthority);
-            userRepository.save(userInDb);
-        }
-        else {
-            throw new RecordNotFoundException("User with userName " + " is not found.");
-        }
-
-    }
-
-    public void setPassword(String userName, String newPassword) {
-        Optional<User> optionalUser = userRepository.findById(userName);
-        if (optionalUser.isPresent()) {
-            User userInDb = optionalUser.get();
-            String encryptedPassword = passwordEncoder.encode(newPassword);
-            userInDb.setPassword(encryptedPassword);
-            userRepository.save(userInDb);
-        }
-        else {
-            throw new RecordNotFoundException("User with userName " + " is not found.");
-        }
-    }
+    public abstract void setPassword(String userName, String newPassword);
 
 }

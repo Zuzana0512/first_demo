@@ -1,7 +1,15 @@
 package nl.novi.webshop.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "stock")
 
@@ -10,39 +18,14 @@ public class Stock {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    String productName;
-    int productAmount;
-    String supplierName;
+    private String productName;
+    private int productAmount;
+    private String supplierName;
 
-    public long getId() {
-        return id;
-    }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
+    public Stock(String productName, int productAmount, String supplierName) {
         this.productName = productName;
-    }
-
-    public int getProductAmount() {
-        return productAmount;
-    }
-
-    public void setProductAmount(int productAmount) {
         this.productAmount = productAmount;
-    }
-
-    public String getSupplierName() {
-        return supplierName;
-    }
-
-    public void setSupplierName(String supplierName) {
         this.supplierName = supplierName;
     }
 }

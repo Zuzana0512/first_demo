@@ -30,19 +30,6 @@ VALUES
     (1, '2021-10-23', true, true),
     (2, '2021-10-30', false, false);
 
-INSERT INTO orders
-SELECT
-    orders.id
-    customer_id,
-    date,
-    paid,
-    delivered
-FROM
-    orders
-        INNER JOIN order_rows
-                    ON order_rows.order_id = orders.id;
-
-
 
 INSERT INTO users (username, password, enabled)
 VALUES

@@ -2,7 +2,7 @@ package nl.novi.webshop.controller;
 
 import nl.novi.webshop.dto.OrderRequestDto;
 import nl.novi.webshop.model.Order;
-import nl.novi.webshop.service.OrderService;
+import nl.novi.webshop.service.OrderServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +16,7 @@ import java.util.Optional;
 public class OrderController {
 
     @Autowired
-    private OrderService orderService;
+    private OrderServiceImpl orderService;
 
     @GetMapping(value = "/orders")
     @ResponseStatus(HttpStatus.OK)

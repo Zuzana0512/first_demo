@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+
 import javax.sql.DataSource;
 
 import static org.springframework.http.HttpMethod.GET;
@@ -44,19 +45,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/registration").permitAll()
-                .antMatchers("/customer/id/orders").permitAll()
+                .antMatchers("/customer/id/orders").hasAnyRole("ADMIN", "FINADMIN", "PRODUCTMANAGER", "USER")
                 .antMatchers("/customers/**").hasAnyRole("ADMIN", "FINADMIN")
                 .antMatchers("/stocks/**").hasAnyRole("ADMIN", "PRDDUCTMANAGER")
-                .antMatchers(GET,"/products/**").hasRole("USER")
+                .antMatchers(GET,"/products/**").hasAnyRole("USER", "ADMIN", "PRODUCTMANAGER")
                 .antMatchers("/products/**").hasAnyRole("ADMIN", "PRODUCTMANAGER")
                 .antMatchers("/payments/**").hasAnyRole("ADMIN", "FINADMIN")
-                .antMatchers(GET, "/orders/id").hasRole("USER")
-                .antMatchers(GET,"/orders/**").hasRole("PRODUCTMANAGER")
-                .antMatchers(POST,"/orders/**").hasRole("PRODUCTMANAGER")
+                .antMatchers(GET,"/orders/**").hasAnyRole("ADMIN", "PRODUCTMANAGER")
+                .antMatchers(POST,"/orders/**").hasAnyRole("ADMIN", "PRODUCTMANAGER")
                 .antMatchers("/orders/**").hasAnyRole("ADMIN", "FINADMIN")
+                .antMatchers(GET, "/orders/id").hasAnyRole("ADMIN", "FINADMIN", "PRODUCTMANAGER")
                 .antMatchers("/suppliers/**").hasAnyRole("ADMIN", "PRODUCTMANAGER")
                 .antMatchers("/users/**").hasRole("ADMIN")
-                .antMatchers("/").permitAll()
+                .antMatchers("/home").permitAll()
                 .antMatchers(GET, "/**").authenticated()
                 .anyRequest().denyAll()
                 .and()

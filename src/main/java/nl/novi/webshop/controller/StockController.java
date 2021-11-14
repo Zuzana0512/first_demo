@@ -1,7 +1,7 @@
 package nl.novi.webshop.controller;
 
 import nl.novi.webshop.model.Stock;
-import nl.novi.webshop.service.StockService;
+import nl.novi.webshop.service.StockServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +14,7 @@ import java.net.URI;
 public class StockController {
 
     @Autowired
-    private StockService stockService;
+    private StockServiceImpl stockService;
 
     @GetMapping(value = "/stocks")
     @ResponseStatus(HttpStatus.OK)

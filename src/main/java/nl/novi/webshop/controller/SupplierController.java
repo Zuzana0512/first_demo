@@ -1,7 +1,7 @@
 package nl.novi.webshop.controller;
 
 import nl.novi.webshop.model.Supplier;
-import nl.novi.webshop.service.SupplierService;
+import nl.novi.webshop.service.SupplierServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +14,7 @@ import java.net.URI;
 public class SupplierController {
 
     @Autowired
-    private SupplierService supplierService;
+    private SupplierServiceImpl supplierService;
 
     @GetMapping(value = "/suppliers")
     @ResponseStatus(HttpStatus.OK)

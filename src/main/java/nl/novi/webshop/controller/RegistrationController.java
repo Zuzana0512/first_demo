@@ -2,7 +2,7 @@ package nl.novi.webshop.controller;
 
 import lombok.AllArgsConstructor;
 import nl.novi.webshop.dto.RegistrationRequestDto;
-import nl.novi.webshop.service.RegistrationService;
+import nl.novi.webshop.service.RegistrationServiceImpl;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 public class RegistrationController {
 
-    private final RegistrationService registrationService;
+    private final RegistrationServiceImpl registrationService;
 
     @PostMapping
     @RequestMapping(path = "/registration")

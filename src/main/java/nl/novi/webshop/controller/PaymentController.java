@@ -1,7 +1,7 @@
 package nl.novi.webshop.controller;
 
 import nl.novi.webshop.model.Payment;
-import nl.novi.webshop.service.PaymentService;
+import nl.novi.webshop.service.PaymentServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +14,7 @@ import java.net.URI;
 public class PaymentController {
 
     @Autowired
-    private PaymentService paymentService;
+    private PaymentServiceImpl paymentService;
 
     @GetMapping(value = "/payments")
     @ResponseStatus(HttpStatus.OK)

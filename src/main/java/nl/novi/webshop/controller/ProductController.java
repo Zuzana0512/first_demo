@@ -1,7 +1,7 @@
 package nl.novi.webshop.controller;
 
 import nl.novi.webshop.model.Product;
-import nl.novi.webshop.service.ProductService;
+import nl.novi.webshop.service.ProductServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +15,7 @@ import java.net.URI;
 public class ProductController {
 
     @Autowired
-    private ProductService productService;
+    private ProductServiceImpl productService;
 
     @GetMapping(value = "/products")
     @ResponseStatus(HttpStatus.OK)

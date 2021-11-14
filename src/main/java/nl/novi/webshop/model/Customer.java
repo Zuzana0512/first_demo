@@ -52,18 +52,7 @@ public class Customer implements UserDetails {
     @JsonIgnore
     private User user;
 
-    public Customer(String firstname, String lastname, String address, Authority authority, Boolean enabled, String email, String password, User user) {
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.address = address;
-        this.authority = authority;
-        this.enabled = enabled;
-        this.email = email;
-        this.password = password;
-        this.user = user;
-    }
-
-    public Customer(String firstname, String lastname, String address, String email, String password, boolean enabled){
+    public Customer(String firstname, String lastname, String address, String email, String password, boolean b){
         this.firstname = firstname;
         this.lastname = lastname;
         this.address = address;
@@ -73,6 +62,13 @@ public class Customer implements UserDetails {
         this.authority = new Authority();
         this.authority.setAuthority("ROLE_USER");
         this.authority.setUsername("customer");
+    }
+
+    public Customer(String firstname, String lastname, String address, String email) {
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.address = address;
+        this.email = email;
     }
 
     @JsonGetter("numberOfOrders")

@@ -1,126 +1,26 @@
 package nl.novi.webshop.service;
 
-
-import lombok.AllArgsConstructor;
 import nl.novi.webshop.dto.CustomerRequestDto;
-import nl.novi.webshop.exeption.CustomerAlreadyExistException;
-import nl.novi.webshop.exeption.RecordNotFoundException;
 import nl.novi.webshop.model.Customer;
-import nl.novi.webshop.model.User;
-import nl.novi.webshop.repository.CustomerRepository;
-import nl.novi.webshop.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-@Service
-@AllArgsConstructor
-public class CustomerService implements UserDetailsService {
-
-    private static List<Customer> customers = new ArrayList<>();
-
-    @Autowired
-    private CustomerRepository customerRepository;
-
-    @Autowired
-    private UserRepository userRepository;
 
 
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    public Iterable<Customer> getCustomers() {
-        return customerRepository.findAll();
-    }
-
-    public Customer getCustomer(long id) {
-        Optional<Customer> customer = customerRepository.findById(id);
-        if (customer.isPresent()){
-            return customer.get();
-        }
-        else {
-            throw new RecordNotFoundException("Customer with id " + id + " not found.");
-        }
-    }
-
-    public Long addCustomer(CustomerRequestDto customerRequestDto) {
-        Customer newCustomer = new Customer();
-        newCustomer.setFirstname(customerRequestDto.getFirstname());
-        newCustomer.setLastname(customerRequestDto.getLastname());
-        newCustomer.setAddress(customerRequestDto.getAddress());
-        newCustomer.setEmail(customerRequestDto.getEmail());
-        Customer savedCustomer = customerRepository.save(newCustomer);
-        User newUser = new User();
-        newUser.setUserName(savedCustomer.getEmail());
-        String password = customerRequestDto.getPassword();
-        String encryptedPassword = passwordEncoder.encode(password);
-        newUser.setPassword(encryptedPassword);
-        newUser.setEnabled(true);
-        newUser.setCustomer(savedCustomer);
-        User savedUser = userRepository.save(newUser);
-        savedCustomer.setUser(savedUser);
-        customerRepository.save(savedCustomer);
-        userService.addAuthority(newUser.getUserName(), "ROLE_CUSTOMER");
-        return newCustomer.getId();
-    }
+public interface CustomerService extends UserDetailsService {
+    public abstract Iterable<Customer> getCustomers();
 
 
-    public void deleteCustomer(long id) {
-        if (customerRepository.existsById(id)) {
-            customerRepository.deleteById(id);
-        }
-        else {
-            throw new RecordNotFoundException("Customer with id " + id + " not found.");
-        }
-    }
+    public abstract Customer getCustomer(long id);
 
-    public void updateCustomer(long id, Customer customer) {
-        Optional<Customer> optionalCustomer = customerRepository.findById(id);
-        if (optionalCustomer.isPresent()){
-            Customer customerInDb = optionalCustomer.get();
-            customerInDb.setFirstname(customer.getFirstname());
-            customerInDb.setLastname(customer.getLastname());
-            customerInDb.setAddress(customer.getAddress());
-            customerInDb.setEmail(customer.getEmail());
-            customerRepository.save(customerInDb);
-        }
-        else {
-            throw new RecordNotFoundException("Customer with id " + id + " not found.");
-        }
+    public abstract Long addCustomer(CustomerRequestDto customerRequestDto);
 
+    public abstract void deleteCustomer(long id);
 
-    }
+    public abstract void updateCustomer(long id, Customer customer);
+
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return customerRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException(String.format("USER_NOT_FOUND_MSG")));
-    }
+    public UserDetails loadUserByUsername(String email);
 
-    public String signUp(Customer customer){
-        boolean userExists = customerRepository
-                .findByEmail(customer.getEmail())
-                .isPresent();
-        if(userExists){
-            throw new CustomerAlreadyExistException("This email is already used.");
-        }
-
-        String encodedPassword = passwordEncoder.encode(customer.getPassword());
-        customer.setPassword(encodedPassword);
-
-        customerRepository.save(customer);
-        return "You are singed.";
-    }
+    public abstract String signUp(Customer customer);
 }
