@@ -4,9 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+
 
 @Getter
 @Setter
@@ -15,13 +15,20 @@ import java.util.List;
 public class User {
 
     @Id
-    @Column(name = "username")
-    private String userName;
+    @Column(nullable = false, unique = true)
+    private String username;
 
-    @NotBlank
+    @Column(nullable = false, length = 255)
     private String password;
 
+    @Column(nullable = false)
     private boolean enabled = true;
+
+    @Column
+    private String apikey;
+
+    @Column
+    private String email;
 
     @OneToMany(
             targetEntity = Authority.class,
@@ -29,12 +36,22 @@ public class User {
             cascade = CascadeType.ALL,
             orphanRemoval = true,
             fetch = FetchType.EAGER)
+    private Set<Authority> authorities = new HashSet<>();
 
-    private List<Authority> authorities = new ArrayList<>();
 
 
-    public void addAuthority(Authority authority){
+    public boolean isEnabled() { return enabled;}
+    public void setEnabled(boolean enabled) { this.enabled = enabled; }
+    public String getApikey() { return apikey; }
+    public void setApikey(String apikey) { this.apikey = apikey; }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email;}
+
+    public Set<Authority> getAuthorities() { return authorities; }
+    public void addAuthority(Authority authority) {
         this.authorities.add(authority);
     }
-
+    public void removeAuthority(Authority authority) {
+        this.authorities.remove(authority);
+    }
 }

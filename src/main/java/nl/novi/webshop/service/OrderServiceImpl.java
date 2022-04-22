@@ -93,7 +93,7 @@ public class OrderServiceImpl implements OrderService {
             long productId = orderRowDto.getProductId();
             Optional<Product> optionalProduct = productRepository.findById(productId);
             if (optionalProduct.isEmpty()) {
-                throw new RecordNotFoundException("Product with id " + customerId + "does not exist");
+                throw new RecordNotFoundException("Product with id " + productId + "does not exist");
             }
 
             Product product = optionalProduct.get();

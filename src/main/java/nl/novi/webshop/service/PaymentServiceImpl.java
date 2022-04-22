@@ -48,7 +48,6 @@ public class PaymentServiceImpl implements PaymentService {
             Payment paymentInDb = optionalPayment.get();
             paymentInDb.setOrder(payment.getOrder());
             paymentInDb.setDate(payment.getDate());
-            paymentInDb.setPaymentStatus(payment.getPaymentStatus());
         }
         else {
             throw new RecordNotFoundException("Payment with id " + id + " not found.");

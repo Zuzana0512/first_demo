@@ -1,5 +1,6 @@
 package nl.novi.webshop.model;
 
+import com.fasterxml.jackson.annotation.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,12 +19,15 @@ public class Payment {
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private long id;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "order_id", referencedColumnName = "id")
+    @JsonManagedReference
     private Order order;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern= "yyyy-MM-dd")
     Date date;
 
-    String paymentStatus;
+    boolean paid;
 
 
 }

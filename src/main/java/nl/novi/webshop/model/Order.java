@@ -36,6 +36,8 @@ public class Order {
     boolean paid = false;
     boolean delivered = false;
 
+    @OneToOne
+    Payment payment;
 
     @OneToMany(mappedBy = "order")
     @JsonManagedReference

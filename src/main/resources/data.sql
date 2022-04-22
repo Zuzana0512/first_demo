@@ -30,13 +30,16 @@ VALUES
     (1, '2021-10-23', true, true),
     (2, '2021-10-30', false, false);
 
+INSERT INTO payments (date, paid, order_id)
+VALUES
+    ('2021-10-23', true, 1);
 
 INSERT INTO users (username, password, enabled)
 VALUES
-    ('admin', '$2a$12$0Win/adXs.HNhgszMNSjc.R3RngkwnkCGabtJsRtVYrn1Q.4Sz2vO' , true),
-    ('user', '$2a$12$0Win/adXs.HNhgszMNSjc.R3RngkwnkCGabtJsRtVYrn1Q.4Sz2vO' , true),
-    ('finadmin', '$2a$12$0Win/adXs.HNhgszMNSjc.R3RngkwnkCGabtJsRtVYrn1Q.4Sz2vO' , true),
-    ('productmanager', '$2a$12$0Win/adXs.HNhgszMNSjc.R3RngkwnkCGabtJsRtVYrn1Q.4Sz2vO' , true);
+    ('admin', '$2a$10$wPHxwfsfTnOJAdgYcerBt.utdAvC24B/DWfuXfzKBSDHO0etB1ica' , true),
+    ('user', '$2a$10$wPHxwfsfTnOJAdgYcerBt.utdAvC24B/DWfuXfzKBSDHO0etB1ica' , true),
+    ('finadmin', '$2a$10$wPHxwfsfTnOJAdgYcerBt.utdAvC24B/DWfuXfzKBSDHO0etB1ica' , true),
+    ('productmanager', '$2a$10$wPHxwfsfTnOJAdgYcerBt.utdAvC24B/DWfuXfzKBSDHO0etB1ica' , true);
 
 
 INSERT INTO authorities (username, authority)
