@@ -48,10 +48,11 @@ public class ProductServiceImpl {
             Product productInDb = optionalProduct.get();
             productInDb.setName(product.getName());
             productInDb.setKind(product.getKind());
-            productInDb.setPackaging(product.getPackaging());
             productInDb.setDescription(product.getDescription());
             productInDb.setPhoto(product.getPhoto());
-            productInDb.setPrice(product.getPrice());
+            productInDb.setPriceThreeSeeds(product.getPriceThreeSeeds());
+            productInDb.setPriceFiveSeeds(product.getPriceFiveSeeds());
+            productInDb.setPriceTenSeeds(product.getPriceTenSeeds());
             productInDb.setVatPercentage(product.getVatPercentage());
             productRepository.save(productInDb);
         }

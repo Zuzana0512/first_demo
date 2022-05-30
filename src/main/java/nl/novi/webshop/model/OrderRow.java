@@ -31,7 +31,7 @@ public class OrderRow {
 
     @JsonGetter("SubTotalExclVat")
     public double calculateSubTotalExclVat() {
-        return roundTo(quantity * product.getPrice(), 2);
+        return roundTo(quantity * product.getPriceThreeSeeds(), 2);
     }
 
     @JsonGetter("SubTotalVatPercentage")
@@ -41,7 +41,7 @@ public class OrderRow {
 
     @JsonGetter("SubTotalVat")
     public double calculateSubTotalVat() {
-        return roundTo(quantity * product.getPrice() * product.getVatPercentage() / 100, 2);
+        return roundTo(quantity * product.getPriceThreeSeeds() * product.getVatPercentage() / 100, 2);
     }
 
     @JsonGetter("SubTotalInclVat")

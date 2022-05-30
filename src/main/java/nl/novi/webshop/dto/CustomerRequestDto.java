@@ -14,10 +14,6 @@ public class CustomerRequestDto {
     @NotBlank
     private String lastname;
     @NotBlank
-    @Email
-    private String email;
-    @NotBlank
-    private String password;
-
-
+    private String address;
+    private long id;
 }

@@ -19,10 +19,12 @@ public class Product {
     private long id;
     private String name;
     private String kind;
-    private String packaging;
     private String description;
     private String photo;
-    private double price = 0;
+    private double priceOneSeed = 0;
+    private double priceThreeSeeds = 0;
+    private double priceFiveSeeds = 0;
+    private double priceTenSeeds = 0;
     private int vatPercentage = 0;
 
 

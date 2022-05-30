@@ -1,4 +1,5 @@
 package nl.novi.webshop.model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -30,6 +31,9 @@ public class User {
     @Column
     private String email;
 
+    @OneToOne
+    private Customer customer;
+
     @OneToMany(
             targetEntity = Authority.class,
             mappedBy = "username",
@@ -37,15 +41,6 @@ public class User {
             orphanRemoval = true,
             fetch = FetchType.EAGER)
     private Set<Authority> authorities = new HashSet<>();
-
-
-
-    public boolean isEnabled() { return enabled;}
-    public void setEnabled(boolean enabled) { this.enabled = enabled; }
-    public String getApikey() { return apikey; }
-    public void setApikey(String apikey) { this.apikey = apikey; }
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email;}
 
     public Set<Authority> getAuthorities() { return authorities; }
     public void addAuthority(Authority authority) {

@@ -29,19 +29,15 @@ public class CustomerServiceImpl implements CustomerService {
     @Autowired
     private CustomerRepository customerRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
     public Iterable<Customer> getCustomers() {
         return customerRepository.findAll();
     }
 
     public Customer getCustomer(long id) {
         Optional<Customer> customer = customerRepository.findById(id);
-        if (customer.isPresent()){
+        if (customer.isPresent()) {
             return customer.get();
-        }
-        else {
+        } else {
             throw new RecordNotFoundException("Customer with id " + id + " not found.");
         }
     }
@@ -50,7 +46,7 @@ public class CustomerServiceImpl implements CustomerService {
         Customer newCustomer = new Customer();
         newCustomer.setFirstname(customerRequestDto.getFirstname());
         newCustomer.setLastname(customerRequestDto.getLastname());
-        newCustomer.setEmail(customerRequestDto.getEmail());
+        newCustomer.setAddress(customerRequestDto.getAddress());
         customerRepository.save(newCustomer);
         return newCustomer.getId();
     }
@@ -59,47 +55,23 @@ public class CustomerServiceImpl implements CustomerService {
     public void deleteCustomer(long id) {
         if (customerRepository.existsById(id)) {
             customerRepository.deleteById(id);
-        }
-        else {
+        } else {
             throw new RecordNotFoundException("Customer with id " + id + " not found.");
         }
     }
 
     public void updateCustomer(long id, Customer customer) {
         Optional<Customer> optionalCustomer = customerRepository.findById(id);
-        if (optionalCustomer.isPresent()){
+        if (optionalCustomer.isPresent()) {
             Customer customerInDb = optionalCustomer.get();
             customerInDb.setFirstname(customer.getFirstname());
             customerInDb.setLastname(customer.getLastname());
             customerInDb.setAddress(customer.getAddress());
-            customerInDb.setEmail(customer.getEmail());
             customerRepository.save(customerInDb);
-        }
-        else {
+        } else {
             throw new RecordNotFoundException("Customer with id " + id + " not found.");
         }
 
 
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return customerRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException(String.format("USER_NOT_FOUND_MSG")));
-    }
-
-    public String signUp(Customer customer){
-        boolean userExists = customerRepository
-                .findByEmail(customer.getEmail())
-                .isPresent();
-        if(userExists){
-            throw new CustomerAlreadyExistException("This email is already used.");
-        }
-
-        String encodedPassword = passwordEncoder.encode(customer.getPassword());
-        customer.setPassword(encodedPassword);
-
-        customerRepository.save(customer);
-        return "You are singed.";
     }
 }

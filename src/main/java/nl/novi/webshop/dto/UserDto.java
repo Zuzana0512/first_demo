@@ -2,6 +2,7 @@ package nl.novi.webshop.dto;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import nl.novi.webshop.model.Authority;
+import nl.novi.webshop.model.Customer;
 
 import java.util.Set;
 
@@ -12,11 +13,20 @@ public class UserDto {
     public Boolean enabled;
     public String apikey;
     public String email;
+    public Customer customer;
     @JsonSerialize
     public Set<Authority> authorities;
 
     public String getUsername() {
         return username;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     public String getPassword() {

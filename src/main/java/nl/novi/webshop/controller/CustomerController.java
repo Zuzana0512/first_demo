@@ -37,15 +37,15 @@ public class CustomerController {
     }
 
 
-    @PostMapping(value = "/customers")
-    public ResponseEntity <Object> addCustomer(@RequestBody CustomerRequestDto customerRequestDto){
-        Long newId = customerService.addCustomer(customerRequestDto);
-
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                .buildAndExpand(newId).toUri();
-
-        return ResponseEntity.created(location).body("Added " + newId);
-    }
+//    @PostMapping(value = "/customers")
+//    public ResponseEntity <Object> addCustomer(@RequestBody CustomerRequestDto customerRequestDto){
+//        Long newId = customerService.addCustomer(customerRequestDto);
+//
+//        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+//                .buildAndExpand(newId).toUri();
+//
+//        return ResponseEntity.created(location).body("Added " + newId);
+//    }
 
 
     @DeleteMapping(value = "/customers/{id}")

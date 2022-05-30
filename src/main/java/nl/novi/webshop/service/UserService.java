@@ -1,10 +1,13 @@
 package nl.novi.webshop.service;
 
+import nl.novi.webshop.dto.CustomerRequestDto;
 import nl.novi.webshop.dto.UserDto;
 import nl.novi.webshop.exeption.RecordNotFoundException;
 import nl.novi.webshop.model.Authority;
+import nl.novi.webshop.model.Customer;
 import nl.novi.webshop.model.User;
 import nl.novi.webshop.repository.AuthorityRepository;
+import nl.novi.webshop.repository.CustomerRepository;
 import nl.novi.webshop.repository.UserRepository;
 import nl.novi.webshop.util.RandomStringGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +25,15 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private CustomerRepository customerRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private CustomerServiceImpl customerService;
 
 //    @Autowired
 //    private AuthorityRepository authorityRepository;
@@ -50,12 +62,23 @@ public class UserService {
         return userRepository.existsById(username);
     }
 
+    public String createCustomer(CustomerRequestDto customerRequestDto, String username) {
+        Long customerId = customerService.addCustomer(customerRequestDto);
+        User newUser = userRepository.findById(username).get();
+        assignUserDataToUser(customerId, newUser.getUsername());
+        return newUser.getUsername();
+    }
+
 
     public String createUser(UserDto userDto) {
         String randomString = RandomStringGenerator.generateAlphaNumeric(20);
         userDto.setApikey(randomString);
-        User newUser = userRepository.save(toUser(userDto));
-        return newUser.getUsername();
+        User user = new User();
+        user = toUser(userDto);
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        user.addAuthority(new Authority(user.getUsername(), "ROLE_CUSTOMER"));
+        userRepository.save(user);
+        return user.getUsername();
     }
 
     public void deleteUser(String username) {
@@ -91,6 +114,27 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public void assignUserDataToUser(Long customerId, String username) {
+
+        var optionalUser = userRepository.findById(username);
+
+        var optionalCustomer = customerRepository.findById(customerId);
+
+        if (optionalCustomer.isPresent() && optionalUser.isPresent()) {
+
+            User user = optionalUser.get();
+
+            Customer customer = optionalCustomer.get();
+
+            user.setCustomer(customer);
+
+            userRepository.save(user);
+
+        }
+
+    }
+
+
     public static UserDto fromUser(User user){
 
         var dto = new UserDto();
@@ -101,6 +145,7 @@ public class UserService {
         dto.apikey = user.getApikey();
         dto.email = user.getEmail();
         dto.authorities = user.getAuthorities();
+        dto.customer = user.getCustomer();
 
         return dto;
     }
@@ -114,6 +159,7 @@ public class UserService {
         user.setEnabled(userDto.getEnabled());
         user.setApikey(userDto.getApikey());
         user.setEmail(userDto.getEmail());
+        user.setCustomer(userDto.getCustomer());
 
         return user;
     }

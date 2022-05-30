@@ -23,7 +23,7 @@ import java.util.List;
 @Entity
 @Table(name = "customers")
 
-public class Customer implements UserDetails {
+public class Customer{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,22 +33,12 @@ public class Customer implements UserDetails {
     private String lastname;
     private String address;
 
-    @JsonIgnore
-    @OneToOne(cascade = CascadeType.ALL)
-    private Authority authority;
-    private Boolean enabled;
-
-    @Column(unique = true)
-    @Email(message = "Please enter a valid e-mail address")
-    private String email;
-
-    private String password;
 
     @OneToMany
     @JsonIgnore
     List<Order> orders;
 
-    @OneToOne
+    @OneToOne(mappedBy = "customer")
     @JsonIgnore
     private User user;
 
@@ -56,62 +46,14 @@ public class Customer implements UserDetails {
         this.firstname = firstname;
         this.lastname = lastname;
         this.address = address;
-        this.email = email;
-        this.password = password;
-        this.enabled = enabled;
-        this.authority = new Authority();
-        this.authority.setAuthority("ROLE_USER");
-        this.authority.setUsername("customer");
     }
 
-    public Customer(String firstname, String lastname, String address, String email) {
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.address = address;
-        this.email = email;
-    }
 
     @JsonGetter("numberOfOrders")
     public int amountOfOrders(){
         return orders.size();
     }
 
-   @JsonIgnore
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(getAuthority().getAuthority());
-        return Collections.singleton(authority);
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
-    }
-
-    @Override
-    public String getUsername() {
-        return email;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return false;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return enabled;
-    }
 
     public void addOrder(Order order) {
         this.orders.add(order);

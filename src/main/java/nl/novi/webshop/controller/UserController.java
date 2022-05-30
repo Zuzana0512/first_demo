@@ -1,5 +1,6 @@
 package nl.novi.webshop.controller;
 
+import nl.novi.webshop.dto.CustomerRequestDto;
 import nl.novi.webshop.dto.UserDto;
 import nl.novi.webshop.exeption.BadRequestException;
 import nl.novi.webshop.service.UserService;
@@ -37,8 +38,19 @@ public class UserController {
 
     }
 
+    @PostMapping(value = "/customer/{username}")
+    public ResponseEntity<UserDto> createNewCustomer(@RequestBody CustomerRequestDto dto, @PathVariable String username) {;
+
+        String newUsername = userService.createCustomer(dto, username);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{username}")
+                .buildAndExpand(newUsername).toUri();
+
+        return ResponseEntity.created(location).build();
+    }
+
     @PostMapping(value = "")
-    public ResponseEntity<UserDto> createKlant(@RequestBody UserDto dto) {;
+    public ResponseEntity<UserDto> createUser(@RequestBody UserDto dto) {;
 
         String newUsername = userService.createUser(dto);
 
